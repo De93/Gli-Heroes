@@ -1,0 +1,124 @@
+/**
+
+controlli: d, f, j, k
+
+**/
+ArrayList circle = new ArrayList();
+int score=0;
+color rosso = color(255, 0, 0);
+color verde = color(0, 255, 0);
+color blu = color(0, 0, 255);
+color giallo = color(255, 255, 0);
+color bianco = color(255,255,255);
+void setup() {
+  size(400, 700);   //larghezza e lunghezza schermo
+}
+void draw() {
+  background(50,20,20);  //sfondo marrone scuro (RGB)
+
+ tiles nota = new tiles(int(random(0, 4)));   //N.B. qui bisogna mettere codice per il BeatDetector!!!
+
+  if (frameCount%50==0) {            //note generate per secondo, frameCount%10=6 note/secondo, Processing ha un valore di default del “frameRate” di 60
+    circle.add(nota);
+  } 
+  fill(170,170,170);                //corde chitarra
+  stroke(255);                   //corde con contorno bianco 
+  rect(40,  0, 20, 700);        //(x=distanza dal bordo di sinistra, y partenza, larghezza linea, y di fine=lunghezza)
+  rect(140, 0, 20, 700);
+  rect(240, 0, 20, 700);
+  rect(340, 0, 20, 700);
+  for (int i=0; i<circle.size(); i++) {
+    tiles pallino = (tiles) circle.get(i);
+    pallino.run();
+    pallino.display();
+    pallino.move();
+    if (key=='d'&&pallino.location.y>430&&pallino.location.x==0.0&&keyPressed) {  //d
+      pallino.gone=true;
+    }
+    if (key=='f'&&pallino.location.y>430&&pallino.location.x==100.0&&keyPressed) {//f
+      pallino.gone=true;
+    }
+    if (key=='j'&&pallino.location.y>430&&pallino.location.x==200.0&&keyPressed) {//j
+      pallino.gone=true;
+    }
+    if (key=='k'&&pallino.location.y>430&&pallino.location.x==300.0&&keyPressed) {//k
+      pallino.gone=true;
+    }
+    if (pallino.location.y>700) {
+      circle.remove(i);
+      score=0;
+    }
+    if (pallino.gone==true) {
+      score+=25;    //conteggio del punteggio
+      circle.remove(i); 
+    }
+  }
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(50);
+  text(score, 200, 530);
+  
+  if (score==300) {
+  PFont carattere; //inizializzo la variabile
+  carattere = loadFont("Apple-Chancery-48.vlw"); // Stabilisco il font che sto per usare
+  textFont(carattere);
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(70);
+  text("BRAVO!!", 200, 430);
+  }
+  if (score==500) {
+  PFont carattere; //inizializzo la variabile
+  carattere = loadFont("Apple-Chancery-48.vlw"); // Stabilisco il font che sto per usare
+  textFont(carattere);
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(70);
+  text("CONTINUA", 200, 350);
+  text("COSI'!", 200, 430);
+  }
+  if (score==700) {
+  PFont carattere; //inizializzo la variabile
+  carattere = loadFont("Apple-Chancery-48.vlw"); // Stabilisco il font che sto per usare
+  textFont(carattere);
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(70);
+  text("OTTIMO!!", 200, 430);
+  }
+  if (score>1000&&score<1150) {
+  PFont carattere; //inizializzo la variabile
+  carattere = loadFont("Apple-Chancery-48.vlw"); // Stabilisco il font che sto per usare
+  textFont(carattere);
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(50);
+  text("YOU ARE", 200, 270);
+  text("A FUCKING", 200, 350);
+  text("HERO!!", 200, 430);
+  }
+  
+}
+class tiles {
+  PVector location;
+  Boolean gone=false;
+
+  tiles(float i) {
+    location = new PVector(i*100, 0);
+  }
+
+  void run() {
+    display();
+    move();
+  }
+
+  void display() {
+    fill(location.x==0?rosso:location.x==100?verde:location.x==200?blu:giallo);
+    ellipse(location.x+50,location.y, 80, 80);
+    stroke(0); //contorno nero
+    strokeWeight(4); //spessore contorno
+  }
+
+  void move() {
+    location.y+=2;                   //velocita
+  }}
