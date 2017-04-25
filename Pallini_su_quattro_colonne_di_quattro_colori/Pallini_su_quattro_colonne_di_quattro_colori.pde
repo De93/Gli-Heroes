@@ -1,7 +1,23 @@
 import grafica.*;
+import processing.serial.*; 
+
+/* per poter cominciare la comunicazione seriale è prima necessario aprire l'IDE di Arduino, fare un nuovo sketch contenente il seguente codice e caricarlo sull' Arduino:
+void setup() {
+Serial.begin(9600);
+}
+
+void loop() {
+ Serial.write(analogRead(A0)/4);
+delay(1);
+}
+Così facendo, una volta caricato lo sketch sull'Arduino, ha inizio la comunicazione seriale tra PC e Arduino e possiamo, dunque, leggere i valori del potenziometro tramite Processing
+*/
+
+Serial myPort; 
 
 
 //variabili
+int sensorValue; // valore della resistenza del potenziometro (viene letta come un numero da 0 a 255)
 int x=100;
 float y=0;
 float i=0;
@@ -9,6 +25,7 @@ float i=0;
 void setup(){
   size(800,800);
   frameRate(60);
+  myPort = new Serial(this, Serial.list()[0],9600); // fornisco a Processing le info sulla connessione seriale
   
 }
 
@@ -33,33 +50,37 @@ void draw (){
   strokeWeight(1);
   
   
-    //Fa apparire il rettangolo giallo quando la pallina ci entra dentro
-  if(y>675){
-    
-    //dice che il rettangolo deve apparire nella prima colonna
-    if (x==100) {
-    fill(255,255,0); //determina il colore del rettangolo
-    rect(0,722, 195,178); //determina posizione e dimensione
-  }
+    //Fa apparire il rettangolo giallo quando si muove la rondella del potenziometro
   
-  //dice che il rettangolo deve apparire nella seconda colonna
-    if (x==300) {
-    fill(255,255,0);
-    rect(205,722, 191,178);
-  }
+    while(myPort.available()>0){
+      sensorValue = myPort.read();
+      println(sensorValue); // stampa nel riquadro console (in basso) i valori letti dal sensore
+  
+      //dice che il rettangolo deve apparire nella prima colonna
+      if (0 <= sensorValue && sensorValue < 65) {
+        fill(255,255,0); //determina il colore del rettangolo
+        rect(0,722, 195,178); //determina posizione e dimensione
+      }
+  
+    //dice che il rettangolo deve apparire nella seconda colonna
+      if (66 <= sensorValue && sensorValue < 129) {
+        fill(255,255,0);
+        rect(205,722, 191,178);
+      }
     
-    //dice che il rettangolo deve apparire nella terza colonna
-    if (x==500) {
-    fill(255,255,0); 
-    rect(405,722, 191,178);
-  }  
+     //dice che il rettangolo deve apparire nella terza colonna
+      if (130 <= sensorValue && sensorValue < 192) {
+        fill(255,255,0); 
+        rect(405,722, 191,178);
+      }  
     
     //dice che il rettangolo deve apparire nella quarta colonna
-    if (x==700) {
-    fill(255,255,0);
-    rect(605,722, 195,178);
+      if (193 <= sensorValue && sensorValue <= 255) {
+        fill(255,255,0);
+        rect(605,722, 195,178);
+      } 
   } 
-}
+
   
   
   //pallina nella prima colonna - verde
