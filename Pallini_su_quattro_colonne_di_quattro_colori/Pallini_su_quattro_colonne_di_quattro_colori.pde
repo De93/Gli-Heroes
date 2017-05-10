@@ -25,7 +25,7 @@ float i=0;
 void setup(){
   size(800,800);
   frameRate(60);
-  myPort = new Serial(this, Serial.list()[0],9600); // fornisco a Processing le info sulla connessione seriale
+  myPort = new Serial(this, "COM8",9600); // fornisco a Processing le info sulla connessione seriale
   
 }
 
@@ -57,25 +57,25 @@ void draw (){
       println(sensorValue); // stampa nel riquadro console (in basso) i valori letti dal sensore
   
       //dice che il rettangolo deve apparire nella prima colonna
-      if (0 <= sensorValue && sensorValue < 65) {
+      if (0 <= sensorValue && sensorValue < 15) {
         fill(255,255,0); //determina il colore del rettangolo
         rect(0,722, 195,178); //determina posizione e dimensione
       }
   
     //dice che il rettangolo deve apparire nella seconda colonna
-      if (66 <= sensorValue && sensorValue < 129) {
+      if (16 <= sensorValue && sensorValue < 69) {
         fill(255,255,0);
         rect(205,722, 191,178);
       }
     
      //dice che il rettangolo deve apparire nella terza colonna
-      if (130 <= sensorValue && sensorValue < 192) {
+      if (70 <= sensorValue && sensorValue < 162) {
         fill(255,255,0); 
         rect(405,722, 191,178);
       }  
     
     //dice che il rettangolo deve apparire nella quarta colonna
-      if (193 <= sensorValue && sensorValue <= 255) {
+      if (163 <= sensorValue && sensorValue <= 255) {
         fill(255,255,0);
         rect(605,722, 195,178);
       } 
