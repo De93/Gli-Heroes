@@ -25,8 +25,10 @@ float i=0;
 void setup(){
   size(800,800);
   frameRate(60);
-  myPort = new Serial(this, "COM8",9600); // fornisco a Processing le info sulla connessione seriale
-  
+  myPort = new Serial(this, "COM3",9600); // fornisco a Processing le info sulla connessione seriale:
+                                          // 9600 è il baud rate, ossia le velocità con cui arduino comunica con il computer    
+                                          // COM8 è la porta seriale tramite cui ci si è collegati ad arduino
+                                          //è possibile vederla nel momento in cui si carica lo sketch arduino e successivamente copiare ed incollare il nome della porta nelle virgolette
 }
 
 
