@@ -144,20 +144,46 @@ void draw() {
   rect(660, 100, 20, 850);
   rect(760, 100, 20, 850);
   
- while(myPort.available()>0){
-      sensorValue = myPort.read();
-      println(sensorValue); // stampa nel riquadro console (in basso) i valori letti dal sensore
+  stroke(153);                          // contorno cerchi
+  noFill();                            // per avere cerchi vuoti
+  ellipse(470,850, 95, 95);         // cerchi entro cui devi centrare le note
+  ellipse(570,850, 95, 95);
+  ellipse(670,850, 95, 95);
+  ellipse(770,850, 95, 95);  
   
-      //dice che il rettangolo deve apparire nella prima colonna
-      if (0 <= sensorValue && sensorValue <= 255) {
-        float x_cursore;
-        float sensorValue_normalized= sensorValue *1.176; // valore del sensore (da 0 a 255) * larghezza finestra/val_max_sensore
-        x_cursore = sensorValue_normalized + 470;
-        stroke(153);
-        noFill();
-        ellipse(x_cursore,850, 100, 100); //determina posizione e dimensione
-      }
-}
+  
+     while(myPort.available()>0){ // stampa nel riquadro console (in basso) i valori letti dal sensore
+        sensorValue = myPort.read();
+        println(sensorValue); // stampa nel riquadro console (in basso) i valori letti dal sensore
+  
+      //dice che il cerchio giallo deve apparire nella prima colonna
+        if (0 <= sensorValue && sensorValue < 15) {
+            fill(255,245,157, 23); //determina il colore del rettangolo
+            ellipse(470,850, 94,94); //determina posizione e dimensione
+        }
+  
+      //dice che il cerchio giallo deve apparire nella seconda colonna
+        if (16 <= sensorValue && sensorValue < 69) {
+          fill(255,245,157,23); 
+          ellipse(570,850, 94, 94);
+        }
+    
+     //dice che il cerchio giallo deve apparire nella terza colonna
+        if (70 <= sensorValue && sensorValue < 162) {
+          fill(255,245,157,23); 
+          ellipse(670,850, 95, 95);
+        }  
+    
+    //dice che il cerchio giallo deve apparire nella quarta colonna
+        if (163 <= sensorValue && sensorValue <= 255) {
+          fill(255,245,157,23);
+          ellipse(770,850, 95, 95);  
+        } 
+        
+    
+    } 
+
+
 
   
   
