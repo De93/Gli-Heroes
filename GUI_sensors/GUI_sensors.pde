@@ -31,6 +31,7 @@ int fai_partire=-1;
 //Variabile valore potenziometro e pulsante
 int sensorValue;
 int puls_value = 0;
+int err = 10;
 
 
 //Variabili per la riproduzione della canzone
@@ -122,14 +123,11 @@ void setup() {
          .setFont(createFont("Arial",25, true))
          ;
          
-  
-     
 }
 
 
 void draw() {
-   
- // PImage img;
+   // PImage img;
  //img = loadImage("guitar_hero.png");
  // background(img);
   background(171,205,239);
@@ -145,8 +143,8 @@ void draw() {
   rect(560, 100, 20, 850);
   rect(660, 100, 20, 850);
   rect(760, 100, 20, 850);
-  
-  /* PARTE DI CODICE PER IL CURSORE */
+   
+     /* PARTE DI CODICE PER IL CURSORE */
   
   stroke(153);                          // contorno cerchi
   noFill();                            // per avere cerchi vuoti
@@ -154,30 +152,28 @@ void draw() {
   ellipse(570,850, 95, 95);
   ellipse(670,850, 95, 95);
   ellipse(770,850, 95, 95);  
-  
-    
    //dice che il cerchio giallo deve apparire nella prima colonna
      if (sensorValue == 0) {
-       fill(255,245,157, 83); //determina il colore del rettangolo
+       fill(255,245,157, 191); //determina il colore del rettangolo
        ellipse(470,850, 94,94); //determina posizione e dimensione
-       // IF PALLINO NEL CERCHIO && PULSANTE PREMUTO ALLORA myPort.write('1')
+      
       }
   
   //dice che il cerchio giallo deve apparire nella seconda colonna
      if (sensorValue == 1) {
-        fill(255,245,157,83); 
+        fill(255,245,157,191); 
         ellipse(570,850, 94, 94);
      }
     
   //dice che il cerchio giallo deve apparire nella terza colonna
      if (sensorValue == 2) {
-        fill(255,245,157,83); 
+        fill(255,245,157,191); 
         ellipse(670,850, 95, 95);
      }  
     
   //dice che il cerchio giallo deve apparire nella quarta colonna
      if (sensorValue == 3) {
-        fill(255,245,157,83);
+        fill(255,245,157,191);
         ellipse(770,850, 95, 95);  
      } 
 
@@ -206,9 +202,14 @@ void draw() {
 
 /* PARTE CODICE CURSORE & PUSH BUTTON */
  void serialEvent(Serial p){
-  // while(myPort.available()>0){ // stampa nel riquadro console (in basso) i valori letti dal sensore
-   //  sensorValue = myPort.read();
-  sensorValue = p.read();     
+  int temp;
+  temp = p.read();     
+  if(temp == 0 || temp == 1 || temp == 2 || temp == 3){
+    sensorValue = temp;
+  }
+  
+  if(temp == 4) puls_value = 1;
+  
   println(sensorValue); // stampa nel riquadro console (in basso) i valori letti dal sensore
   } 
 
@@ -382,7 +383,7 @@ void controlEvent(ControlEvent theEvent)
   else if (theEvent.isController())
   {
     oggetto_premuto = theEvent.getController().toString();
-    println(oggetto_premuto);
+  //  println(oggetto_premuto);
     
    
     if (oggetto_premuto.equals("canzoni [ScrollableList]")) //Questa mi serve se ho più controller, se no va tutto in canzone_selezionata
@@ -408,14 +409,25 @@ class tiles {
 
   void display() {
     fill(location.x==0?rosso:location.x==100?verde:location.x==200?blu:giallo);
-    println(location.x);
+   // println(location.x);
     ellipse(location.x+470,location.y+100, 80, 80);
     stroke(0); //contorno nero
     strokeWeight(4); //spessore contorno
   }
 
   void move() {
-    location.y+=2;                   //velocita
+    location.y+=2;   //velocità
+    if(location.x/100 == sensorValue && puls_value == 1 && location.y>= (850- err) && location.y<=(850+err)){
+      myPort.write(sensorValue);
+      score = score+1;
+      print("Score: ");
+      println(score);
+      puls_value = 0;
+    }
+    //print("location: ");
+    //print(location.x);
+    //print(" ");
+    //println(location.y);
   }
   
   void clear_pallini (){
