@@ -28,8 +28,10 @@ String oggetto_premuto;
 int canzone_selezionata = -1;
 int fai_partire=-1;
 
-//Variabile valore potenziometro
+//Variabile valore potenziometro e pulsante
 int sensorValue;
+int puls_value = 0;
+
 
 //Variabili per la riproduzione della canzone
 Minim musica; //inizializzazione della funzione per far partire la musica
@@ -53,7 +55,7 @@ void setup() {
   size(900, 950); //Dimensione dell'interfaccia grafica
   
   //comincio comunicazione seriale
-    myPort = new Serial(this, "COM3",9600);
+    myPort = new Serial(this, "COM8",9600);
     
   //carico le canzoni
   musica=new Minim (this); //Creo la funzione che fa partire la canzone
@@ -144,6 +146,8 @@ void draw() {
   rect(660, 100, 20, 850);
   rect(760, 100, 20, 850);
   
+  /* PARTE DI CODICE PER IL CURSORE */
+  
   stroke(153);                          // contorno cerchi
   noFill();                            // per avere cerchi vuoti
   ellipse(470,850, 95, 95);         // cerchi entro cui devi centrare le note
@@ -151,44 +155,36 @@ void draw() {
   ellipse(670,850, 95, 95);
   ellipse(770,850, 95, 95);  
   
-  
-     while(myPort.available()>0){ // stampa nel riquadro console (in basso) i valori letti dal sensore
-        sensorValue = myPort.read();
-        println(sensorValue); // stampa nel riquadro console (in basso) i valori letti dal sensore
-  
-      //dice che il cerchio giallo deve apparire nella prima colonna
-        if (0 <= sensorValue && sensorValue < 15) {
-            fill(255,245,157, 23); //determina il colore del rettangolo
-            ellipse(470,850, 94,94); //determina posizione e dimensione
-        }
-  
-      //dice che il cerchio giallo deve apparire nella seconda colonna
-        if (16 <= sensorValue && sensorValue < 69) {
-          fill(255,245,157,23); 
-          ellipse(570,850, 94, 94);
-        }
     
-     //dice che il cerchio giallo deve apparire nella terza colonna
-        if (70 <= sensorValue && sensorValue < 162) {
-          fill(255,245,157,23); 
-          ellipse(670,850, 95, 95);
-        }  
+   //dice che il cerchio giallo deve apparire nella prima colonna
+     if (sensorValue == 0) {
+       fill(255,245,157, 83); //determina il colore del rettangolo
+       ellipse(470,850, 94,94); //determina posizione e dimensione
+       // IF PALLINO NEL CERCHIO && PULSANTE PREMUTO ALLORA myPort.write('1')
+      }
+  
+  //dice che il cerchio giallo deve apparire nella seconda colonna
+     if (sensorValue == 1) {
+        fill(255,245,157,83); 
+        ellipse(570,850, 94, 94);
+     }
     
-    //dice che il cerchio giallo deve apparire nella quarta colonna
-        if (163 <= sensorValue && sensorValue <= 255) {
-          fill(255,245,157,23);
-          ellipse(770,850, 95, 95);  
-        } 
-        
+  //dice che il cerchio giallo deve apparire nella terza colonna
+     if (sensorValue == 2) {
+        fill(255,245,157,83); 
+        ellipse(670,850, 95, 95);
+     }  
     
-    } 
+  //dice che il cerchio giallo deve apparire nella quarta colonna
+     if (sensorValue == 3) {
+        fill(255,245,157,83);
+        ellipse(770,850, 95, 95);  
+     } 
+
+/* PARTE DI CODICE PER LE NOTE E LA MUSICA */
 
 
-
-  
-  
-  if (canzone1.isPlaying() || canzone2.isPlaying()||canzone3.isPlaying()|| canzone4.isPlaying()||canzone5.isPlaying()){
- 
+ if (canzone1.isPlaying() || canzone2.isPlaying()||canzone3.isPlaying()|| canzone4.isPlaying()||canzone5.isPlaying()){
  strokeWeight(1);
  tiles nota = new tiles(int(random(0, 4)));   //N.B. qui bisogna mettere codice per il BeatDetector!!!
 
@@ -201,10 +197,20 @@ void draw() {
     pallino.run();
     pallino.display();
     pallino.move();
-   }
   }
+ }
   
 }
+
+/* FINE DRAW */
+
+/* PARTE CODICE CURSORE & PUSH BUTTON */
+ void serialEvent(Serial p){
+  // while(myPort.available()>0){ // stampa nel riquadro console (in basso) i valori letti dal sensore
+   //  sensorValue = myPort.read();
+  sensorValue = p.read();     
+  println(sensorValue); // stampa nel riquadro console (in basso) i valori letti dal sensore
+  } 
 
 
 void canzoni(int n) {
@@ -412,6 +418,14 @@ class tiles {
     location.y+=2;                   //velocita
   }
   
-
+  void clear_pallini (){
+    fill(location.x==0?rosso:location.x==100?verde:location.x==200?blu:giallo);
+    println(location.x);
+    ellipse(location.x+470,100, 80, 80);
+    stroke(0); //contorno nero
+    strokeWeight(4); //spessore contorno
+    
+  }
+   
 
 }
