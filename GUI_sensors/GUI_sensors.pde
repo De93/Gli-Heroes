@@ -30,8 +30,10 @@ int fai_partire=-1;
 
 //Variabile valore potenziometro e pulsante
 int sensorValue;
+int prec_sensorValue = 5;
 int puls_value = 0;
-int err = 10;
+int err = 15;
+
 
 
 //Variabili per la riproduzione della canzone
@@ -52,7 +54,7 @@ color giallo = color(255, 255, 0);
 color bianco = color(255,255,255);
 
 void setup() {
-  
+  frameRate(60);
   size(900, 950); //Dimensione dell'interfaccia grafica
   
   //comincio comunicazione seriale
@@ -122,21 +124,23 @@ void setup() {
          .setSize(103,50)
          .setFont(createFont("Arial",25, true))
          ;
-         
+
 }
 
 
 void draw() {
+
    // PImage img;
  //img = loadImage("guitar_hero.png");
  // background(img);
+
+  
   background(171,205,239);
   
   strokeWeight(1);
   stroke(50,20,20);
   fill (50,20,20);
   rect(380,100,480,850);
-  
   fill(170,170,170);                //corde chitarra
   stroke(255);                   //corde con contorno bianco 
   rect(460, 100, 20, 850);        //(x=distanza dal bordo di sinistra, y partenza, larghezza linea, y di fine=lunghezza)
@@ -153,29 +157,33 @@ void draw() {
   ellipse(670,850, 95, 95);
   ellipse(770,850, 95, 95);  
    //dice che il cerchio giallo deve apparire nella prima colonna
-     if (sensorValue == 0) {
+     if (sensorValue == 0 ) {
        fill(255,245,157, 191); //determina il colore del rettangolo
        ellipse(470,850, 94,94); //determina posizione e dimensione
-      
+       
       }
   
   //dice che il cerchio giallo deve apparire nella seconda colonna
      if (sensorValue == 1) {
         fill(255,245,157,191); 
         ellipse(570,850, 94, 94);
+
      }
     
   //dice che il cerchio giallo deve apparire nella terza colonna
      if (sensorValue == 2) {
         fill(255,245,157,191); 
         ellipse(670,850, 95, 95);
+
      }  
     
   //dice che il cerchio giallo deve apparire nella quarta colonna
      if (sensorValue == 3) {
         fill(255,245,157,191);
-        ellipse(770,850, 95, 95);  
+        ellipse(770,850, 95, 95); 
+        
      } 
+     
 
 /* PARTE DI CODICE PER LE NOTE E LA MUSICA */
 
@@ -195,7 +203,7 @@ void draw() {
     pallino.move();
   }
  }
-  
+  //delay(10);
 }
 
 /* FINE DRAW */
@@ -210,14 +218,14 @@ void draw() {
   
   if(temp == 4) puls_value = 1;
   
-  println(sensorValue); // stampa nel riquadro console (in basso) i valori letti dal sensore
+  // println(sensorValue); // stampa nel riquadro console (in basso) i valori letti dal sensore
   } 
 
 
 void canzoni(int n) {
 
   /* request the selected item based on index n */
-  println(n, menu_canzoni.get(ScrollableList.class, "canzoni").getItem(n));
+//  println(n, menu_canzoni.get(ScrollableList.class, "canzoni").getItem(n));
     
   //CColor c = new CColor();
   //c.setBackground(color(255,0,0));
@@ -424,6 +432,8 @@ class tiles {
       println(score);
       puls_value = 0;
     }
+    
+    if(location.y == 850 + err) puls_value = 0;
     //print("location: ");
     //print(location.x);
     //print(" ");
@@ -432,7 +442,7 @@ class tiles {
   
   void clear_pallini (){
     fill(location.x==0?rosso:location.x==100?verde:location.x==200?blu:giallo);
-    println(location.x);
+//  println(location.x);
     ellipse(location.x+470,100, 80, 80);
     stroke(0); //contorno nero
     strokeWeight(4); //spessore contorno
