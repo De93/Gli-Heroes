@@ -47,6 +47,9 @@ AudioPlayer canzone5;
 //variabili per pallini
 ArrayList circle = new ArrayList();
 int score=0;
+int current_frame = 0;
+int frame_interval = 30;
+
 color rosso = color(255, 0, 0);
 color verde = color(0, 255, 0);
 color blu = color(0, 0, 255);
@@ -147,6 +150,10 @@ void draw() {
   rect(560, 100, 20, 850);
   rect(660, 100, 20, 850);
   rect(760, 100, 20, 850);
+    
+   /* RESET BUTTON */
+   
+   if (puls_value == 1 && (frameCount - current_frame  >= frame_interval)) puls_value = 0;
    
      /* PARTE DI CODICE PER IL CURSORE */
   
@@ -156,6 +163,8 @@ void draw() {
   ellipse(570,850, 95, 95);
   ellipse(670,850, 95, 95);
   ellipse(770,850, 95, 95);  
+  
+  
    //dice che il cerchio giallo deve apparire nella prima colonna
      if (sensorValue == 0 ) {
        fill(255,245,157, 191); //determina il colore del rettangolo
@@ -192,8 +201,10 @@ void draw() {
  strokeWeight(1);
  tiles nota = new tiles(int(random(0, 4)));   //N.B. qui bisogna mettere codice per il BeatDetector!!!
 
-  if (frameCount%50==0) {            //note generate per secondo, frameCount%10=6 note/secondo, Processing ha un valore di default del “frameRate” di 60
+
+  if (frameCount%70==0) {            //note generate per secondo, frameCount%10=6 note/secondo, Processing ha un valore di default del “frameRate” di 60
     circle.add(nota);
+  
   } 
   
   for (int i=0; i<circle.size(); i++) {
@@ -216,7 +227,14 @@ void draw() {
     sensorValue = temp;
   }
   
-  if(temp == 4) puls_value = 1;
+   
+  if(temp == 4) {
+    puls_value = 1;
+    
+    current_frame = frameCount;
+    
+    
+  }
   
   // println(sensorValue); // stampa nel riquadro console (in basso) i valori letti dal sensore
   } 
@@ -365,6 +383,7 @@ if ( canzone1.isPlaying() || canzone2.isPlaying()|| canzone3.isPlaying()||canzon
 }
 
 void STOP (int j){
+  score = 0;
  if ( canzone1.isPlaying() || canzone2.isPlaying()|| canzone3.isPlaying()||canzone4.isPlaying()||canzone5.isPlaying() ){
     canzone1.pause();
     canzone1.rewind();
@@ -432,7 +451,7 @@ class tiles {
 
   void move() {
     location.y+=2;   //velocità
-    if(location.x/100 == sensorValue && puls_value == 1 && location.y>= (850- err) && location.y<=(850+err)){
+    if(location.x/100 == sensorValue && puls_value == 1 && location.y>= (800- err) && location.y<(800+err)){
       myPort.write(sensorValue);
       score = score+1;
       print("Score: ");
@@ -440,7 +459,7 @@ class tiles {
       puls_value = 0;
     }
     
-    if(location.y == 850 + err) puls_value = 0;
+    //if(location.y == 800 + err) puls_value = 0;
     //print("location: ");
     //print(location.x);
     //print(" ");
