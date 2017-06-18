@@ -376,6 +376,13 @@ void STOP (int j){
     canzone4.rewind();
     canzone5.pause();
     canzone5.rewind();
+    
+    for (int k=0; k<circle.size(); k++) {
+    tiles pallino = (tiles) circle.get(k);
+    pallino.run_2();
+    pallino.display_2();
+    pallino.move_2();
+  }
  }
 
 }
@@ -440,14 +447,25 @@ class tiles {
     //println(location.y);
   }
   
-  void clear_pallini (){
+  
+  void run_2() {
+    display_2();
+    move_2();
+  }
+
+  void display_2() {
+    location.x=0;
+    location.y=0;
     fill(location.x==0?rosso:location.x==100?verde:location.x==200?blu:giallo);
-//  println(location.x);
-    ellipse(location.x+470,100, 80, 80);
+    ellipse(location.x+470,location.y+100, 80, 80);
     stroke(0); //contorno nero
     strokeWeight(4); //spessore contorno
-    
   }
+
+  void move_2() {
+    location.y+=2;   //velocità
+    }
+    
    
 
 }
