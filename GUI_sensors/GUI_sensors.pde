@@ -95,7 +95,7 @@ void setup() {
    titolo.addTextlabel("label")
                     .setText("GUITAR HERO")
                     .setPosition(300,20)
-                    .setColorValue(0xf0000fff)
+                    .setColorValue(#321414)    //colore scritta guitar hero
                     .setFont(createFont("Georgia",50))
                     ;
    
@@ -133,11 +133,11 @@ void setup() {
 
 void draw() {
 
-  background(171,205,239);
+  background(220,197,149);    //colore riquadro esterno
   
   strokeWeight(1);
-  stroke(50,20,20);
-  fill (50,20,20);
+  stroke(50,20,20);           
+  fill (50,20,20);             //colore riquadro interno
   rect(380,100,480,850);
   fill(170,170,170);                //corde chitarra
   stroke(255);                   //corde con contorno bianco 
