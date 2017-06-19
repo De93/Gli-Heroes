@@ -229,7 +229,7 @@ void draw() {
   fill(bianco);
   textAlign(CENTER);
   textSize(50);
-  text(score, 200, 530);
+  text(score, 610, 530);
   
   if (score==300) {
   PFont carattere; //inizializzo la variabile
