@@ -35,7 +35,6 @@ int puls_value = 0;
 int err = 15;
 
 
-
 //Variabili per la riproduzione della canzone
 Minim musica; //inizializzazione della funzione per far partire la musica
 AudioPlayer canzone1;
@@ -60,8 +59,14 @@ void setup() {
   frameRate(60);
   size(900, 950); //Dimensione dell'interfaccia grafica
   
+  // Variabili font
+
+ PFont font = loadFont("Algerian-70.vlw");  //inizializzo la variabile e stabilisco font
+ PFont carattere = loadFont("Algerian-32.vlw");
+ PFont char_tendina = loadFont("Algerian-24.vlw");
+ 
   //comincio comunicazione seriale
-    myPort = new Serial(this, "COM8",9600);
+  myPort = new Serial(this, "COM8",9600);
     
   //carico le canzoni
   musica=new Minim (this); //Creo la funzione che fa partire la canzone
@@ -74,7 +79,9 @@ void setup() {
  
   //Creo l'elemento della GUI menù a tendina
   menu_canzoni = new ControlP5(this); 
-  
+  menu_canzoni.setColorBackground(color(#050505)); // default color
+ // menu_canzoni.setColorActive(color(#FFF59D));
+ 
   //Array con i titoli delle canzoni
   List lista_canzoni = Arrays.asList("Rockabye", "Wings of Love", "Money For Nothing", "Two Princess", "Void", "Carica la tua canzone"); //Array che contiene gli elementi del menù a tendina
   
@@ -86,21 +93,26 @@ void setup() {
      .setItemHeight(45)
      .addItems(lista_canzoni)
      .setOpen(false)
-     .setFont(createFont("Arial",15, true))
+     .setFont(char_tendina)
      .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER)
      ;
    
+   
+  
+  
    //Creo la scritta GUITAR HERO e la personalizzo
    titolo = new ControlP5(this);
    titolo.addTextlabel("label")
                     .setText("GUITAR HERO")
-                    .setPosition(300,20)
-                    .setColorValue(0xf0000fff)
-                    .setFont(createFont("Georgia",50))
+                    .setPosition(250,20)
+                    .setColorValue(#050505)
+                    .setFont(font)
                     ;
    
    //Creo l'elemento bottone
    bottone = new ControlP5(this);
+  // bottone.setColorActive(#8B8B8B); // color for mouse-over
+   bottone.setColorBackground(color(#050505)); // default color
    
 
      //Creo il bottone con scritto PLAY e lo personalizzo
@@ -108,7 +120,7 @@ void setup() {
          .setValue(0)
          .setPosition(55,450)
          .setSize(103,50)
-         .setFont(createFont("Arial",25, true))
+         .setFont(carattere)
          .setOff()
          ;
    
@@ -117,7 +129,7 @@ void setup() {
          .setValue(0)
          .setPosition(203,450)
          .setSize(103,50)
-         .setFont(createFont("Arial",25, true))
+         .setFont(carattere)
          ; 
   
   //Creo il bottone con scritto STOP e lo personalizzo
@@ -125,7 +137,7 @@ void setup() {
          .setValue(0)
          .setPosition(120,530)
          .setSize(103,50)
-         .setFont(createFont("Arial",25, true))
+         .setFont(carattere)
          ;
 
 }
@@ -133,12 +145,10 @@ void setup() {
 
 void draw() {
 
-   // PImage img;
- //img = loadImage("guitar_hero.png");
- // background(img);
-
-  
-  background(171,205,239);
+  PImage img;                         //riquadro esterno color legno
+  img = loadImage("legno1.png");
+  img.resize(900,950);
+  background(img);
   
   strokeWeight(1);
   stroke(50,20,20);
@@ -212,8 +222,69 @@ void draw() {
     pallino.run();
     pallino.display();
     pallino.move();
+    
+  /* if(pallino.location.x/100 == sensorValue && puls_value == 1 && pallino.location.y>= (800- err) && pallino.location.y<(800+err)){
+      pallino.gone=true;
+      myPort.write(sensorValue);
+      score = score+1;
+      print("Score: ");
+      println(score);
+      puls_value = 0;
+    }*/
+  /* if (pallino.gone==true){
+      score+=25;   //ogni pallino centrato somma 25 punti
+      circle.remove(i); 
+    }*/
+  
+   }
+  
+  
+  PFont caratt = loadFont("Algerian-32.vlw");
+  
+  textFont(caratt);
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(50);
+  text(score, 618, 530);
+  
+   
+  if (score==30) {
+ 
+  textFont(caratt);
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(70);
+  text("BRAVO!!", 610, 430);
   }
- }
+  if (score==50) {
+
+  textFont(caratt);
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(70);
+  text("CONTINUA", 610, 350);
+  text("COSI'!", 610, 430);
+  }
+  if (score==100) {
+ 
+  textFont(caratt);
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(70);
+  text("OTTIMO!!", 610, 430);
+  }
+  if (score==150) {
+
+  textFont(caratt);
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(50);
+  text("YOU ARE", 610, 270);
+  text("A", 610, 350);
+  text("HERO!!", 610, 430);
+  }
+   
+}
   //delay(10);
 }
 
@@ -238,18 +309,6 @@ void draw() {
   
   // println(sensorValue); // stampa nel riquadro console (in basso) i valori letti dal sensore
   } 
-
-
-void canzoni(int n) {
-
-  /* request the selected item based on index n */
-//  println(n, menu_canzoni.get(ScrollableList.class, "canzoni").getItem(n));
-    
-  //CColor c = new CColor();
-  //c.setBackground(color(255,0,0));
-  //menu_canzoni.get(ScrollableList.class, "canzoni").getItem(n).put("color", c);
-  //println(n);
-} 
 
 
 void PLAY (int i){
@@ -444,7 +503,7 @@ class tiles {
   void display() {
     fill(location.x==0?rosso:location.x==100?verde:location.x==200?blu:giallo);
    // println(location.x);
-    ellipse(location.x+470,location.y+100, 80, 80);
+    ellipse(location.x+470,location.y+130, 80, 80);
     stroke(0); //contorno nero
     strokeWeight(4); //spessore contorno
   }
@@ -458,7 +517,7 @@ class tiles {
       println(score);
       puls_value = 0;
     }
-    
+  
     //if(location.y == 800 + err) puls_value = 0;
     //print("location: ");
     //print(location.x);
