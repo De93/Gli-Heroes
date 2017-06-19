@@ -27,6 +27,7 @@ ControlP5 bottone;
 String oggetto_premuto;
 int canzone_selezionata = -1;
 int fai_partire=-1;
+int refresh_sfondo=1;
 
 //Variabile valore potenziometro e pulsante
 int sensorValue;
@@ -80,10 +81,10 @@ void setup() {
   //Creo l'elemento della GUI menù a tendina
   menu_canzoni = new ControlP5(this); 
   menu_canzoni.setColorBackground(color(#050505)); // default color
- // menu_canzoni.setColorActive(color(#FFF59D));
- 
+  menu_canzoni.setColorActive(color(#B42D00));
+  menu_canzoni.setColorForeground(color(#6F0000));
   //Array con i titoli delle canzoni
-  List lista_canzoni = Arrays.asList("Rockabye", "Wings of Love", "Money For Nothing", "Two Princess", "Void", "Carica la tua canzone"); //Array che contiene gli elementi del menù a tendina
+  List lista_canzoni = Arrays.asList("Rockabye", "Wings of Love", "Money For Nothing", "Two Princess", "Void"); //Array che contiene gli elementi del menù a tendina
   
   //Creo il e personalizzo il menu a tendina
   menu_canzoni.addScrollableList("canzoni")
@@ -113,7 +114,8 @@ void setup() {
    bottone = new ControlP5(this);
   // bottone.setColorActive(#8B8B8B); // color for mouse-over
    bottone.setColorBackground(color(#050505)); // default color
-   
+   bottone.setColorActive(color(#B42D00));
+   bottone.setColorForeground(color(#6F0000));
 
      //Creo il bottone con scritto PLAY e lo personalizzo
   bottone.addButton("PLAY")
@@ -145,10 +147,13 @@ void setup() {
 
 void draw() {
 
-  PImage img;                         //riquadro esterno color legno
-  img = loadImage("legno1.png");
-  img.resize(900,950);
-  background(img);
+  if(refresh_sfondo==1 || mousePressed){ 
+      PImage img;                         //riquadro esterno color legno
+      img = loadImage("legno1.png");
+      img.resize(900,950);
+      background(img);
+      refresh_sfondo = 0;
+  }
   
   strokeWeight(1);
   stroke(50,20,20);
@@ -161,7 +166,7 @@ void draw() {
   rect(660, 100, 20, 850);
   rect(760, 100, 20, 850);
     
-   /* RESET BUTTON */
+   /* RESET BUTTON VALUE */
    
    if (puls_value == 1 && (frameCount - current_frame  >= frame_interval)) puls_value = 0;
    
@@ -476,12 +481,14 @@ void controlEvent(ControlEvent theEvent)
   else if (theEvent.isController())
   {
     oggetto_premuto = theEvent.getController().toString();
+     
   //  println(oggetto_premuto);
     
    
     if (oggetto_premuto.equals("canzoni [ScrollableList]")) //Questa mi serve se ho più controller, se no va tutto in canzone_selezionata
     {
       canzone_selezionata = int(theEvent.getController().getValue());
+       
     }
   }
 }
@@ -503,7 +510,7 @@ class tiles {
   void display() {
     fill(location.x==0?rosso:location.x==100?verde:location.x==200?blu:giallo);
    // println(location.x);
-    ellipse(location.x+470,location.y+130, 80, 80);
+    ellipse(location.x+470,location.y+142, 80, 80);
     stroke(0); //contorno nero
     strokeWeight(4); //spessore contorno
   }
@@ -535,7 +542,7 @@ class tiles {
     location.x=0;
     location.y=0;
     fill(location.x==0?rosso:location.x==100?verde:location.x==200?blu:giallo);
-    ellipse(location.x+470,location.y+100, 80, 80);
+    ellipse(location.x+470,location.y+142, 80, 80);
     stroke(0); //contorno nero
     strokeWeight(4); //spessore contorno
   }
