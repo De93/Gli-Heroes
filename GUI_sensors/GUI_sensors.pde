@@ -242,7 +242,7 @@ void draw() {
   fill(bianco);
   textAlign(CENTER);
   textSize(70);
-  text("BRAVO!!", 200, 430);
+  text("BRAVO!!", 610, 430);
   }
   if (score==500) {
   PFont carattere; //inizializzo la variabile
@@ -251,8 +251,8 @@ void draw() {
   fill(bianco);
   textAlign(CENTER);
   textSize(70);
-  text("CONTINUA", 200, 350);
-  text("COSI'!", 200, 430);
+  text("CONTINUA", 610, 350);
+  text("COSI'!", 610, 430);
   }
   if (score==700) {
   PFont carattere; //inizializzo la variabile
@@ -261,7 +261,7 @@ void draw() {
   fill(bianco);
   textAlign(CENTER);
   textSize(70);
-  text("OTTIMO!!", 200, 430);
+  text("OTTIMO!!", 610, 430);
   }
   if (score>1000&&score<1150) {
   PFont carattere; //inizializzo la variabile
@@ -270,9 +270,9 @@ void draw() {
   fill(bianco);
   textAlign(CENTER);
   textSize(50);
-  text("YOU ARE", 200, 270);
-  text("A", 200, 350);
-  text("HERO!!", 200, 430);
+  text("YOU ARE", 610, 270);
+  text("A", 610, 350);
+  text("HERO!!", 610, 430);
   }
    
 }
