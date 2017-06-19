@@ -133,7 +133,11 @@ void setup() {
 
 void draw() {
 
-  background(220,197,149);    //colore riquadro esterno
+  PImage img;                         //riquadro esterno color legno
+  img = loadImage("legno1.png");
+  img.resize(900,950);
+  background(img);
+      
   
   strokeWeight(1);
   stroke(50,20,20);           
