@@ -212,8 +212,71 @@ void draw() {
     pallino.run();
     pallino.display();
     pallino.move();
+    
+    if(location.x/100 == sensorValue && puls_value == 1 && location.y>= (800- err) && location.y<(800+err)){
+      pallino.gone=true;
+      myPort.write(sensorValue);
+      score = score+1;
+      print("Score: ");
+      println(score);
+      puls_value = 0;
+    }
+    if (pallino.gone==true){
+      score+=25;   //ogni pallino centrato somma 25 punti
+      circle.remove(i); 
+    }
+    if (pallino.location.y> (800+err)) {   //se non si riesce a prendere il pallino mi azzera i punti
+      circle.remove(i);
+      score=0;
+    }
+   }
+   
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(50);
+  text(score, 200, 530);
+  
+  if (score==300) {
+  PFont carattere; //inizializzo la variabile
+  carattere = loadFont("Apple-Chancery-48.vlw"); // Stabilisco il font che sto per usare
+  textFont(carattere);
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(70);
+  text("BRAVO!!", 200, 430);
   }
- }
+  if (score==500) {
+  PFont carattere; //inizializzo la variabile
+  carattere = loadFont("Apple-Chancery-48.vlw"); // Stabilisco il font che sto per usare
+  textFont(carattere);
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(70);
+  text("CONTINUA", 200, 350);
+  text("COSI'!", 200, 430);
+  }
+  if (score==700) {
+  PFont carattere; //inizializzo la variabile
+  carattere = loadFont("Apple-Chancery-48.vlw"); // Stabilisco il font che sto per usare
+  textFont(carattere);
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(70);
+  text("OTTIMO!!", 200, 430);
+  }
+  if (score>1000&&score<1150) {
+  PFont carattere; //inizializzo la variabile
+  carattere = loadFont("Apple-Chancery-48.vlw"); // Stabilisco il font che sto per usare
+  textFont(carattere);
+  fill(bianco);
+  textAlign(CENTER);
+  textSize(50);
+  text("YOU ARE", 200, 270);
+  text("A", 200, 350);
+  text("HERO!!", 200, 430);
+  }
+   
+}
   //delay(10);
 }
 
@@ -458,7 +521,7 @@ class tiles {
       println(score);
       puls_value = 0;
     }
-    
+  
     //if(location.y == 800 + err) puls_value = 0;
     //print("location: ");
     //print(location.x);
