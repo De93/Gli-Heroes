@@ -133,11 +133,6 @@ void setup() {
 
 void draw() {
 
-   // PImage img;
- //img = loadImage("guitar_hero.png");
- // background(img);
-
-  
   background(171,205,239);
   
   strokeWeight(1);
@@ -301,18 +296,6 @@ void draw() {
   
   // println(sensorValue); // stampa nel riquadro console (in basso) i valori letti dal sensore
   } 
-
-
-void canzoni(int n) {
-
-  /* request the selected item based on index n */
-//  println(n, menu_canzoni.get(ScrollableList.class, "canzoni").getItem(n));
-    
-  //CColor c = new CColor();
-  //c.setBackground(color(255,0,0));
-  //menu_canzoni.get(ScrollableList.class, "canzoni").getItem(n).put("color", c);
-  //println(n);
-} 
 
 
 void PLAY (int i){
