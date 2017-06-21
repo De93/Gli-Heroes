@@ -214,15 +214,15 @@ void draw() {
 
  if (canzone1.isPlaying() || canzone2.isPlaying()||canzone3.isPlaying()|| canzone4.isPlaying()||canzone5.isPlaying()){
  strokeWeight(1);
- tiles nota = new tiles(int(random(0, 4)));   //N.B. qui bisogna mettere codice per il BeatDetector!!!
+ tiles nota = new tiles(int(random(0, 4)));   //crea nuove note random 
 
 
   if (frameCount%70==0) {            //note generate per secondo, frameCount%10=6 note/secondo, Processing ha un valore di default del “frameRate” di 60
-    circle.add(nota);
+    circle.add(nota);                //se le note generate per secondo sono=0, aggiunge nota
   
   } 
   
-  for (int i=0; i<circle.size(); i++) {
+  for (int i=0; i<circle.size(); i++) {         //ciclo for che regola la discesa dei pallini e il loro colore/grandezza
     tiles pallino = (tiles) circle.get(i);
     pallino.run();
     pallino.display();
@@ -460,7 +460,7 @@ void STOP (int j){
     canzone5.pause();
     canzone5.rewind();
     
-    for (int k=0; k<circle.size(); k++) {
+    for (int k=0; k<circle.size(); k++) {        //ciclo for indispensabile per far ripartire le palline dall'inizio ogni volta che clicco sullo STOP
     tiles pallino = (tiles) circle.get(k);
     pallino.run_2();
     pallino.display_2();
@@ -495,8 +495,8 @@ void controlEvent(ControlEvent theEvent)
 
 
 class tiles {
-  PVector location;
-  Boolean gone=false;
+  PVector location;         //creo un vettore per la posizione (x,y)
+  Boolean gone=false;       //Booleano per il conteggio dei punti 
 
   tiles(float i) {
     location = new PVector(i*100, 0);
@@ -508,7 +508,7 @@ class tiles {
   }
 
   void display() {
-    fill(location.x==0?rosso:location.x==100?verde:location.x==200?blu:giallo);
+    fill(location.x==0?rosso:location.x==100?verde:location.x==200?blu:giallo);  //imposto colore pallini per ogni "corda"
    // println(location.x);
     ellipse(location.x+470,location.y+142, 80, 80);
     stroke(0); //contorno nero
@@ -533,7 +533,7 @@ class tiles {
   }
   
   
-  void run_2() {
+  void run_2() {      //run_2 mi serve per il ciclo for nella parte dello STOP
     display_2();
     move_2();
   }
