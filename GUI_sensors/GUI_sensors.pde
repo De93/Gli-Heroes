@@ -87,7 +87,7 @@ void setup() {
   List lista_canzoni = Arrays.asList("Rockabye", "Wings of Love", "Money For Nothing", "Two Princess", "Void"); //Array che contiene gli elementi del menù a tendina
   
   //Creo il e personalizzo il menu a tendina
-  menu_canzoni.addScrollableList("canzoni")
+  menu_canzoni.addScrollableList("songs")
      .setPosition(30, 200)
      .setSize(300, 200)
      .setBarHeight(45)
